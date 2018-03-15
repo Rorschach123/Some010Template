@@ -1,21 +1,4 @@
-//--------------------------------------
-//--- 010 Editor v2.0.2 Binary Template
-//
-// Author:    Peter Kankowski   http://smallcode.weblogs.us
-// File mask: *.exe,*.dll,*.scr,*.8b?,*.drv,*.ocx
-// Purpose:   to display executable file headers.
-//            Supports DLLs, Windows CE and Win64 executables.
-//            Displays informative names for all flags and fields.
-// Update:    Didier Stevens https://DidierStevens.com
-//            2010/09/05: Added DYNAMIC_BASE, FORCE_INTEGRITY, NX_COMPAT and NO_ISOLATION to DLLCHARACTERISTICS struct
-//--------------------------------------
-// Recommended reading:
-// 1. Bernd Luevelsmeyer. The PE file format
-//    http://webster.cs.ucr.edu/Page_TechDocs/pe.txt
-// 2. DJ Delorie. MS DOS EXE format
-//    http://www.delorie.com/djgpp/doc/exe/
-// 3. Iczelion. PE tutorial
-//    http://spiff.tripnet.se/~iczelion/tutorials.html
+
 LittleEndian();
 
 typedef struct {      // DOS .EXE header
@@ -584,7 +567,7 @@ FSeek(dos_header.AddressOfNewExeHeader + sizeof(DWORD) + sizeof(IMAGE_FILE_HEADE
 IMAGE_SECTION_HEADER sections_table[nt_headers.FileHeader.NumberOfSections];
 
 
-//1.goto cli header(com.rva ¨C text.virtualaddress + section_offset)
+//1.goto cli header(com.rva â€“ text.virtualaddress + section_offset)
 local int i,findText = 0,rvaOff;
 for(i = 0; i < nt_headers.FileHeader.NumberOfSections; ++i)
    if(sections_table[i].PointerToRawData && sections_table[i].SizeOfRawData) {
@@ -753,7 +736,23 @@ typedef struct {
 		DWORD ParamList;
 	else
 		WORD ParamList;
-		
+	
+	local int methodOffset = RVA - rvaOff;
+	local int currentPos = FTell();
+	FSeek(methodOffset);
+	UCHAR flags;
+	if((flags & 0x3) == 2) {
+		local int CodeSize = (flags >> 2) & 0x3F;
+		UCHAR MethodCode[CodeSize];
+	}
+	else if((flags & 0x3) == 3) {
+		UCHAR FatFlags;
+		USHORT MAX_STACK;
+		DWORD CodeSize;
+		DWORD LOCAL_VAR_SIG_TOK;
+		UCHAR MethodCode[CodeSize];
+	}
+	FSeek(currentPos);
 }TABLE_METHODDEF<read=ReadTABLE_METHODDEF>;
 
 string ReadTABLE_METHODDEF(TABLE_METHODDEF &table_method) {
@@ -795,7 +794,7 @@ if(exists(stream_0_header.NTable.NField))
 	
 if(exists(stream_0_header.NTable.NMethodDef))
 	IMAGE_TABLE_METHODDEF table_methoddefs;
-
+	
 
 
 
