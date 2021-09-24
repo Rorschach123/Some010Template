@@ -1,0 +1,29 @@
+BigEndian();
+
+struct IPHeader {
+    ubyte version : 4;
+    ubyte headerLen : 4;
+    ubyte typeOfService;
+    ushort totalLen;
+    ushort identifier;
+    ubyte notUse : 1;
+	ubyte dontF : 1;
+	ubyte moreF : 1;
+	ubyte offset2 : 5;
+	ubyte offset1;
+    ubyte ttl;
+    ubyte protocol;
+	ushort headerCheckSum;
+	uint32 srcIP;
+	uint32 destIP;
+};
+
+struct UDPHeader {
+	ushort srcPort;
+	ushort destPort;
+	ushort udpLen;
+	ushort idnetify;
+};
+
+IPHeader ipheader;
+UDPHeader udpHeader;

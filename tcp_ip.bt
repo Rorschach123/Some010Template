@@ -1,0 +1,44 @@
+BigEndian();
+
+struct IPHeader {
+    ubyte version : 4;
+    ubyte headerLen : 4;
+    ubyte typeOfService;
+    ushort totalLen;
+    ushort identifier;
+    ubyte notUse : 1;
+	ubyte dontF : 1;
+	ubyte moreF : 1;
+	ubyte offset2 : 5;
+	ubyte offset1;
+    ubyte ttl;
+    ubyte protocol;
+	ushort headerCheckSum;
+	uint32 srcIP;
+	uint32 destIP;
+};
+
+struct TCPHeader {
+	ushort srcPort;
+	ushort destPort;
+	uint32 Syn;
+	uint32 Ack;
+	ubyte headerLen : 4;
+	ubyte reserved : 4;
+	ubyte reserved : 2;
+	ubyte urg : 1;
+	ubyte ack : 1;
+	ubyte psh : 1;
+	ubyte rst : 1;
+	ubyte syn : 1;
+	ubyte fin : 1;
+	ushort receiveWindow;
+	ushort headerCheckSum;
+	ushort urgentData;
+};
+
+IPHeader ipheader;
+TCPHeader tcpHeader;
+
+char tcpOption[tcpHeader.headerLen*4-20];
+
