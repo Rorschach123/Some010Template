@@ -12,10 +12,10 @@
 
 ICMP协议包结构解析
 
-### TCP_IP.bt
+### TCPIP.bt
 
 TCP/IP协议包结构解析
 
-### UDP_IP.bt
+### UDPIP.bt
 
 对应UDP协议包结构解析
